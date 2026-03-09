@@ -3,7 +3,7 @@ import requests
 from bs4 import BeautifulSoup
 
 def get_soup(url):
-  # get soup funct holds the variables to gather data 
+  # get_soup() funct holds the variables to gather data 
   r = requests.get(url)
   r.raise_for_status()
   html = r.text.encode("utf-8")
@@ -11,15 +11,25 @@ def get_soup(url):
   return soup
 
 def get_categories(url):
-    # get category funct extracts specific data needed 
+  # get_category() funct extracts specific data needed 
   soup = get_soup(url)
+  # get_soup() funct holds variable to gather data 
+
+  # empty data dictionary to hold extracted data
   data = {}
-  #ADD CODE - select and extract category animals here
-  categories = soup.find_all("")
-  # Return the data here
+  # select and extract animals into categories here
+  categories = soup.find_all("dl")
+  for category in categories:
+    category_name = category.find("dt").get_text()
+    category_animals = category.find_all("a") 
+    data[category_name] = category_animals
+  # return the data here
   return data
+ 
 
 category_data = get_categories("https://skillcrush.github.io/web-scraping-endangered-species/")
+
+print(category_data)
 
 # -----------------------------------------------------
 # -----------------------------------------------------
@@ -31,7 +41,7 @@ import requests
 from bs4 import BeautifulSoup
 
 def get_soup(url):
-    # get soup funct holds the variables to gather data 
+  # get_soup() funct holds the variables to gather data 
   r = requests.get(url)
   r.raise_for_status()
   html = r.text.encode("utf-8")
@@ -39,11 +49,15 @@ def get_soup(url):
   return soup
 
 def get_categories(url):
-  # get category funct extracts specific data needed 
+  # get_category() funct extracts specific data needed 
   soup = get_soup(url)
+    # get_soup() funct holds variable to gather data 
+
+      # empty data dictionary 
   data = {}
   #ADD CODE - select and extract the mean pay gap here OR status of reported category if change
 
+  categories = soup.find_all("govuk-tag--green")
   # Return the data here
   return data
 
