@@ -54,9 +54,8 @@ for category in category_data:
   for animal in category_data[category]:
     animal_href = animal["href"]
     animal_class = get_animal(animal_href)
-
-print(animal_href)
-print(animal_class)
+    print(animal_href)
+    print(animal_class)
 
 # -----------------------------------------------------
 # -----------------------------------------------------
