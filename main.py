@@ -1,10 +1,15 @@
 # 1) SPECIES BY EXTINCT/ ENDAGERED CATEGORY 
 import requests
+import json
 from bs4 import BeautifulSoup
+
 
 def get_soup(url):
   # get_soup() funct holds the variables to gather data 
-  r = requests.get(url)
+  headers = {
+"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X)"
+  }
+  r = requests.get(url, headers=headers)
   r.raise_for_status()
   html = r.text.encode("utf-8")
   soup = BeautifulSoup(html, "html.parser")
@@ -42,7 +47,6 @@ def get_animal(url):
 
   return animal_class
 
-
 category_data = get_categories("https://skillcrush.github.io/web-scraping-endangered-species/")
 
 # check whether your animal class web scrapers were working
@@ -50,12 +54,35 @@ category_data = get_categories("https://skillcrush.github.io/web-scraping-endang
 # print(category_data)
 # print(animal_class)
 
+# list to contain a dictionary for each animal 
+collected_data = [
+]
+
+# combine the two web scrapers to pull animal names and their conservation status then create json files for it 
 for category in category_data:
   for animal in category_data[category]:
     animal_href = animal["href"]
+    animal_name = animal.contents[0]
     animal_class = get_animal(animal_href)
+
+    if len(animal_name) > 3:
+      collected_data.append({
+        "Animal Name": animal_name,
+        "Animal Class": animal_class,
+        "Category": category
+      })
+    # grab text inside each link 
+
     print(animal_href)
-    print(animal_class)
+    print(collected_data)
+    # print(animal_name)
+    # print(animal_class)
+
+with open("data.json", "w") as jsonfile:
+  json.dump(collected_data, jsonfile)
+
+# conbine web scraper so it pulls animal names and their conservation status then create json files for it
+
 
 # -----------------------------------------------------
 # -----------------------------------------------------
